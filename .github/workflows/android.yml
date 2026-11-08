@@ -1,22 +1,32 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+name: JARVIS Android Build
 
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
 
-    <application
-        android:allowBackup="true"
-        android:label="JARVIS"
-        android:theme="@android:style/Theme.Material.NoActionBar">
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
 
-        </activity>
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
 
-    </application>
-</manifest>
+      - name: Build Android APK
+        run: gradle assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: JARVIS-APK
+          path: app/build/outputs/apk/debug/*.apk
