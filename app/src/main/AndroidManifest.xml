@@ -5,7 +5,7 @@
     <application
         android:allowBackup="true"
         android:label="JARVIS"
-        android:theme="@style/AppTheme"
+        android:theme="@style/AppTheme">
 
         <activity
             android:name=".MainActivity"
